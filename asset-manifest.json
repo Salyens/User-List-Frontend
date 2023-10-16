@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "https://Salyens.github.io/User-List-Frontend/static/css/main.7bbbf8c3.css",
-    "main.js": "https://Salyens.github.io/User-List-Frontend/static/js/main.03fc97a1.js",
-    "index.html": "https://Salyens.github.io/User-List-Frontend/index.html",
-    "main.7bbbf8c3.css.map": "https://Salyens.github.io/User-List-Frontend/static/css/main.7bbbf8c3.css.map",
-    "main.03fc97a1.js.map": "https://Salyens.github.io/User-List-Frontend/static/js/main.03fc97a1.js.map"
+    "main.css": "/static/css/main.7bbbf8c3.css",
+    "main.js": "/static/js/main.03fc97a1.js",
+    "index.html": "/index.html",
+    "main.7bbbf8c3.css.map": "/static/css/main.7bbbf8c3.css.map",
+    "main.03fc97a1.js.map": "/static/js/main.03fc97a1.js.map"
   },
   "entrypoints": [
     "static/css/main.7bbbf8c3.css",
