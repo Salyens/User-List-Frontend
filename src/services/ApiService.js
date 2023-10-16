@@ -13,42 +13,32 @@ class ApiService {
   }
 
   static async get() {
-    const allUsers = await axios.get(ApiService.apiBase, {
+    const data = await axios.get(ApiService.apiBase, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-    return allUsers.data;
+    return data;
   }
 
   static async delete(ids) {
-    const myInfo = await axios.get(`${ApiService.apiBase}/me`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
-    await axios.delete(`${ApiService.apiBase}/delete`, {
+
+    const response = await axios.delete(`${ApiService.apiBase}/delete`, {
       data: { idsToDelete: ids },
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-    if (ids.includes(myInfo.data._id)) localStorage.clear();
+
+    if (ids.includes(response.data._id)) localStorage.clear();
   }
 
   static async update(blockStatus, ids) {
-    const myInfo = await axios.get(`${ApiService.apiBase}/me`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
-    await axios.patch(
+
+    const response = await axios.patch(
       `${ApiService.apiBase}/update`,
       { blockStatus, ids },
       {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       }
     );
-    if (blockStatus && ids.includes(myInfo.data._id)) localStorage.clear();
-  }
-
-  static async getMyInfo() {
-    const myInfo = await axios.get(`${ApiService.apiBase}/me`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    });
-    return myInfo;
+    if (blockStatus && ids.includes(response.data._id)) localStorage.clear();
   }
 
   static async login(data) {

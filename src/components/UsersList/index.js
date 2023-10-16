@@ -15,26 +15,16 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
   const handleGetAllUsers = () => {
     ApiService.get()
       .then((res) => {
-        if (res) onSetUsers(res);
+        if (res.status === 200) {
+          onSetUsers(res.data.allUsers);
+          setUserName(res.data.userInfo.name);
+        }
       })
       .catch((e) => {
         if (!e || (e.response && e.response.status === 401)) {
           handleLogOut(e, navigate);
         }
 
-        setErrors([
-          "An error occurred while loading the data. Please try again later.",
-        ]);
-      });
-  };
-
-  const handleGetUserName = () => {
-    ApiService.getMyInfo()
-      .then((res) => {
-        if (res.status === 200) setUserName(res.data.name);
-        console.log(res.data.name);
-      })
-      .catch((_) => {
         setErrors([
           "An error occurred while loading the data. Please try again later.",
         ]);
@@ -48,7 +38,6 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
 
   useEffect(() => {
     handleGetAllUsers();
-    handleGetUserName();
   }, []);
 
   const renderTableHeaders = () => {
