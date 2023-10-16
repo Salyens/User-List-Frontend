@@ -1,0 +1,8 @@
+.blocked {
+    opacity: 0.6;
+}
+.table-wrap-text {
+    white-space: normal;
+    word-break: break-word;
+  }
+  
