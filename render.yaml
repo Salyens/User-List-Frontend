@@ -1,5 +1,5 @@
 staticSites:
-  - name: your-site-name
+  - name: task-4
     buildCommand: npm run build
     staticDir: build
     routes:
