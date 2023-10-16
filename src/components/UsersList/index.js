@@ -32,6 +32,7 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
     ApiService.getMyInfo()
       .then((res) => {
         if (res.status === 200) setUserName(res.data.name);
+        console.log(res.data.name);
       })
       .catch((_) => {
         setErrors([

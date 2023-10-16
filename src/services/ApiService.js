@@ -9,7 +9,6 @@ class ApiService {
       userData
     );
     localStorage.setItem("token", response.data.accessToken);
-    localStorage.setItem("userName", response.data.name);
     return response.data;
   }
 
