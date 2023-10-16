@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UsersList from "../UsersList";
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
