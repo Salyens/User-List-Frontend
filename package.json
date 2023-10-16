@@ -16,7 +16,6 @@
     "serve": "^14.2.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://Salyens.github.io/User-List-Frontend/",
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",
@@ -25,7 +24,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:3004",
   "browserslist": {
     "production": [
       ">0.2%",
