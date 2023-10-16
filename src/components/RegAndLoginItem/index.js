@@ -2,6 +2,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 
 const RegAndLoginItem = ({ param, name, onInputChange, inputValue }) => {
+
   return (
     <InputGroup size="lg" className="mb-3 row">
       <InputGroup.Text
@@ -11,6 +12,7 @@ const RegAndLoginItem = ({ param, name, onInputChange, inputValue }) => {
         {param}
       </InputGroup.Text>
       <Form.Control
+        type={name=== 'password' ? "password" : "text"}
         aria-label="Large"
         aria-describedby={`inputGroup-${name}`}
         name={name}
