@@ -16,7 +16,7 @@ const App = () => {
   const [users, setUsers] = useState([]);
 
   return (
-    <Router basename="/User-List-Frontend">
+    <Router basename="/">
       <div className=" m-3">
         <Routes>
           <Route path="/login" element={<Login />} />
