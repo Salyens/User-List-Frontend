@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import UsersList from "../UsersList";
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
@@ -9,7 +9,6 @@ import {
 import WithAuth from "../HOC/WithAuth";
 import Login from "../Auth/Login";
 import Registration from "../Auth/Registration";
-
 
 const App = () => {
   const [isChecked, setIsChecked] = useState([]);
