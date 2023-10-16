@@ -1,5 +1,5 @@
 staticSites:
-  - name: task-4
+  - name: user-list-react
     buildCommand: npm run build
     staticDir: build
     routes:
