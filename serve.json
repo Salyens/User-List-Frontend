@@ -1,0 +1,9 @@
+{
+    "clean_urls": false,
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
