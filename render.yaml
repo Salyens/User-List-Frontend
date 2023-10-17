@@ -1,8 +1,8 @@
-staticSites:
-  - name: user-list-react
-    buildCommand: npm run build
-    staticDir: build
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
+# staticSites:
+#   - name: user-list-react
+#     buildCommand: npm run build
+#     staticDir: build
+#     routes:
+#       - type: rewrite
+#         source: /*
+#         destination: /index.html
