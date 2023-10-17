@@ -5,20 +5,18 @@ import { Button, Form, Row } from "react-bootstrap";
 import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import ToolBar from "../ToolBar";
-import handleLogOut from "../helpers/handleLogOut";
+import handleLogOut from "../../helpers/handleLogOut";
 
 const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
+
   const [errors, setErrors] = useState([]);
   const [userName, setUserName] = useState("");
   const navigate = useNavigate();
 
-  const handleGetAllUsers = () => {
-    ApiService.get()
+  const handleGetData = (apiService, setData, field) => {
+    apiService()
       .then((res) => {
-        if (res.status === 200) {
-          onSetUsers(res.data.allUsers);
-          setUserName(res.data.userInfo.name);
-        }
+        if (res.status === 200) setData(res.data[field]);
       })
       .catch((e) => {
         if (!e || (e.response && e.response.status === 401)) {
@@ -37,7 +35,8 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
   };
 
   useEffect(() => {
-    handleGetAllUsers();
+    handleGetData(ApiService.get, onSetUsers, "users");
+    handleGetData(ApiService.getUserInfo, setUserName, "name");
   }, []);
 
   const renderTableHeaders = () => {

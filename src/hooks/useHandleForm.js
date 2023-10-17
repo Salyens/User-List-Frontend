@@ -17,7 +17,7 @@ const useHandleForm = (initialState, serviceFunction, navigateFunction) => {
       setInput(initialState);
       navigateFunction();
     } catch (error) {
-      setErrors([error.response.data.message]);
+      setErrors(error.response.data.message);
     }
   };
 

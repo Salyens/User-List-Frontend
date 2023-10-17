@@ -11,13 +11,19 @@ const AuthForm = ({ fields, initialState, apiServiceFunction, title }) => {
     () => navigate("/users")
   );
 
-
   return (
     <div className="d-flex flex-column justify-content-center align-items-center vh-100">
       <h2 className="mb-3 text-center">{title}</h2>
-      {errors && <p className="text-danger">{errors.join("")}</p>}
+      {errors && errors.length > 0 && (
+        <ul className="text-danger text-center">
+          {errors.map((error, index) => (
+            <li key={index}>{error}</li>
+          ))}
+        </ul>
+      )}
+
       <Form
-        className="col-10 col-sm-8 col-md-6 col-lg-5 col-xl-4 col-xxl-3 d-flex flex-column justify-content-center align-items-center"
+        className="col-10 col-sm-10 col-md-7 col-lg-6 col-xl-5 col-xxl-3 d-flex flex-column justify-content-center align-items-center"
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
@@ -37,8 +43,16 @@ const AuthForm = ({ fields, initialState, apiServiceFunction, title }) => {
         </Button>
       </Form>
 
-      {title === "Sign Up" && <Link to="/login" className="text-decoration-none mt-3">Login</Link>}
-      {title === "Log In" && <Link to="/registration" className="text-decoration-none mt-3">Sign Up</Link>}
+      {title === "Sign Up" && (
+        <Link to="/login" className="text-decoration-none mt-3">
+          Login
+        </Link>
+      )}
+      {title === "Log In" && (
+        <Link to="/registration" className="text-decoration-none mt-3">
+          Sign Up
+        </Link>
+      )}
     </div>
   );
 };

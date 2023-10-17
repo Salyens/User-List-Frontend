@@ -19,26 +19,28 @@ class ApiService {
     return data;
   }
 
-  static async delete(ids) {
+  static async getUserInfo() {
+    const data = await axios.get(`${ApiService.apiBase}/me`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    });
+    return data;
+  }
 
-    const response = await axios.delete(`${ApiService.apiBase}/delete`, {
+  static async delete(ids) {
+    await axios.delete(`${ApiService.apiBase}/delete`, {
       data: { idsToDelete: ids },
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
     });
-
-    if (ids.includes(response.data._id)) localStorage.clear();
   }
 
   static async update(blockStatus, ids) {
-
-    const response = await axios.patch(
+    await axios.patch(
       `${ApiService.apiBase}/update`,
       { blockStatus, ids },
       {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       }
     );
-    if (blockStatus && ids.includes(response.data._id)) localStorage.clear();
   }
 
   static async login(data) {
