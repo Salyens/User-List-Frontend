@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import User from "../User";
 import Table from "react-bootstrap/Table";
-import { Button, Form, Row } from "react-bootstrap";
+import { Button, Form, Row, Spinner } from "react-bootstrap";
 import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import ToolBar from "../ToolBar";
 import handleLogOut from "../../helpers/handleLogOut";
 
 const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
-
   const [errors, setErrors] = useState([]);
   const [userName, setUserName] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   const handleGetData = (apiService, setData, field) => {
@@ -37,6 +37,7 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
   useEffect(() => {
     handleGetData(ApiService.get, onSetUsers, "users");
     handleGetData(ApiService.getUserInfo, setUserName, "name");
+    setIsLoading(false);
   }, []);
 
   const renderTableHeaders = () => {
@@ -82,7 +83,15 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
             </tr>
           </thead>
           <tbody>
-            {users.length ? (
+            {isLoading ? (
+              <tr>
+                <td colSpan={5} className="text-center">
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </td>
+              </tr>
+            ) : users.length ? (
               users.map((user) => (
                 <User
                   isChecked={isChecked}
@@ -93,7 +102,7 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
               ))
             ) : (
               <tr>
-                <td colSpan={5}>No data</td>
+                <td colSpan={5}></td>
               </tr>
             )}
           </tbody>
