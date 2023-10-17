@@ -23,7 +23,7 @@ const AuthForm = ({ fields, initialState, apiServiceFunction, title }) => {
       )}
 
       <Form
-        className="col-10 col-sm-10 col-md-7 col-lg-6 col-xl-5 col-xxl-3 d-flex flex-column justify-content-center align-items-center"
+        className="col-10 col-sm-10 col-md-7 col-lg-6 col-xl-5 col-xxl-4 d-flex flex-column justify-content-center align-items-center"
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
