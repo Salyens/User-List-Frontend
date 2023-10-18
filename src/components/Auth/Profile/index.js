@@ -4,15 +4,18 @@ import { Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../../../services/ApiService";
 
-const UserNameAndLogout = ({ userName, onSetUserName }) => {
+const Profile = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true); 
+  const [userName, setUserName] = useState({ name: "", isLoading: true });
 
   const handleGetUserName = () => {
     ApiService.getUserInfo()
       .then((res) => {
-        if (res.status === 200) onSetUserName(res.data.name);
-        setIsLoading(false);
+        if (res.status === 200)
+          setUserName((userName) => ({
+            name: res.data.name,
+            isLoading: false,
+          }));
       })
       .catch((e) => {
         if (!e || (e.response && e.response.status === 401))
@@ -31,10 +34,10 @@ const UserNameAndLogout = ({ userName, onSetUserName }) => {
   return (
     <div className="d-flex mt-2 justify-content-end align-items-center">
       <div className="me-2">
-        {isLoading ? (
+        {userName.isLoading ? (
           <Spinner animation="border" size="sm" />
         ) : (
-          `Hello, ${userName}`
+          `Hello, ${userName.name}`
         )}
       </div>
       <Button onClick={() => handleLogOut(navigate)}>Log out</Button>
@@ -42,4 +45,4 @@ const UserNameAndLogout = ({ userName, onSetUserName }) => {
   );
 };
 
-export default UserNameAndLogout;
+export default Profile;

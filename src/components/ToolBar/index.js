@@ -20,9 +20,12 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
     setLoadingAction("delete");
     try {
       await ApiService.delete(isChecked);
-      onSetUsers((prevUsers) =>
-        prevUsers.filter((user) => !isChecked.includes(user._id))
-      );
+      onSetUsers((prevUsers) => {
+        const filteredUsers = prevUsers.list.filter(
+          (user) => !isChecked.includes(user._id)
+        );
+        return { list: filteredUsers, isLoading: false };
+      });
       onSetIsChecked([]);
       verifyLoggedInUser(true);
     } catch (e) {
@@ -37,13 +40,14 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
     setLoadingAction(blocked ? "block" : "unblock");
     try {
       await ApiService.update(blocked, isChecked);
-      onSetUsers((prevUsers) =>
-        prevUsers
+      onSetUsers((prevUsers) => {
+        const modifiedUsers = prevUsers.list
           .map((user) =>
             isChecked.includes(user._id) ? { ...user, status: blocked } : user
           )
-          .sort((a, b) => a.status - b.status)
-      );
+          .toSorted((a, b) => a.status - b.status);
+        return { list: modifiedUsers, isLoading: false };
+      });
       onSetIsChecked([]);
       verifyLoggedInUser(blocked);
     } catch (e) {
@@ -59,7 +63,7 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
       .then((res) => {
         setLoadingAction("");
         if (res.status === 200 && blocked && isChecked.includes(res.data._id)) {
-          handleLogOut("", navigate);
+          handleLogOut(navigate);
         }
       })
       .catch((e) => {

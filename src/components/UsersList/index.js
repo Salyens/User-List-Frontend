@@ -6,19 +6,18 @@ import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import ToolBar from "../ToolBar";
 import handleLogOut from "../../helpers/handleLogOut";
-import UserNameAndLogout from "../Auth/UserNameAndLogout";
+import Profile from "../Auth/Profile";
 
-const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
+const UsersList = () => {
   const [errors, setErrors] = useState([]);
-  const [userName, setUserName] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isChecked, setIsChecked] = useState([]);
+  const [users, setUsers] = useState({ list: [], isLoading: true });
   const navigate = useNavigate();
 
   const handleGetUsers = () => {
     ApiService.get()
       .then((res) => {
-        if (res.status === 200) onSetUsers(res.data.users);
-        setIsLoading(false);
+        if (res.status === 200) setUsers((users) => ({list:res.data.users, isLoading:false }));
       })
       .catch((e) => {
         if (!e || (e.response && e.response.status === 401))
@@ -31,8 +30,8 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
   };
 
   const handleFillAll = (e) => {
-    if (e.target.checked) onSetIsChecked(users.map((user) => user._id));
-    else onSetIsChecked([]);
+    if (e.target.checked) setIsChecked(users.list.map((user) => user._id));
+    else setIsChecked([]);
   };
 
   useEffect(() => {
@@ -48,7 +47,7 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
 
   return (
     <div>
-      <UserNameAndLogout userName={userName} onSetUserName={setUserName} />
+      <Profile />
       <h1 className="text-center mt-5">Users</h1>
       {errors.length > 0 &&
         errors.map((error, index) => (
@@ -59,8 +58,8 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
 
       <ToolBar
         isChecked={isChecked}
-        onSetIsChecked={onSetIsChecked}
-        onSetUsers={onSetUsers}
+        onSetIsChecked={setIsChecked}
+        onSetUsers={setUsers}
         onSetErrors={setErrors}
       />
       <Row className="table-responsive">
@@ -71,7 +70,7 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
                 <Form.Check
                   type="checkbox"
                   aria-label="select user"
-                  checked={isChecked.length === users.length}
+                  checked={isChecked.length === users.list.length}
                   onChange={handleFillAll}
                 />
               </th>
@@ -79,7 +78,7 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
             </tr>
           </thead>
           <tbody>
-            {isLoading ? (
+            {users.isLoading ? (
               <tr>
                 <td colSpan={5} className="text-center">
                   <Spinner animation="border" role="status">
@@ -87,11 +86,11 @@ const UsersList = ({ isChecked, onSetIsChecked, users, onSetUsers }) => {
                   </Spinner>
                 </td>
               </tr>
-            ) : users.length ? (
-              users.map((user) => (
+            ) : users.list.length ? (
+              users.list.map((user) => (
                 <User
                   isChecked={isChecked}
-                  onSetIsChecked={onSetIsChecked}
+                  onSetIsChecked={setIsChecked}
                   userData={user}
                   key={user._id}
                 />

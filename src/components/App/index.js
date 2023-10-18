@@ -11,9 +11,6 @@ import Login from "../Auth/Login";
 import Registration from "../Auth/Registration";
 
 const App = () => {
-  const [isChecked, setIsChecked] = useState([]);
-  const [users, setUsers] = useState([]);
-
   return (
     <Router>
       <div className=" m-3">
@@ -24,12 +21,7 @@ const App = () => {
             path="/users"
             element={
               <WithAuth>
-                <UsersList
-                  isChecked={isChecked}
-                  onSetIsChecked={setIsChecked}
-                  users={users}
-                  onSetUsers={setUsers}
-                />
+                <UsersList />
               </WithAuth>
             }
           />
