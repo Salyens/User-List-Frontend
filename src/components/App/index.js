@@ -9,6 +9,8 @@ import {
 import WithAuth from "../HOC/WithAuth";
 import Login from "../Auth/Login";
 import Registration from "../Auth/Registration";
+import Profile from "../Auth/Profile";
+import ErrorBoundary from "../HOC/ErrorBoundry";
 
 const App = () => {
   return (
@@ -21,7 +23,12 @@ const App = () => {
             path="/users"
             element={
               <WithAuth>
-                <UsersList />
+                <ErrorBoundary>
+                  <Profile />
+                </ErrorBoundary>
+                <ErrorBoundary>
+                  <UsersList />
+                </ErrorBoundary>
               </WithAuth>
             }
           />

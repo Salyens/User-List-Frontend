@@ -6,7 +6,6 @@ import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import ToolBar from "../ToolBar";
 import handleLogOut from "../../helpers/handleLogOut";
-import Profile from "../Auth/Profile";
 
 const UsersList = () => {
   const [errors, setErrors] = useState([]);
@@ -46,8 +45,8 @@ const UsersList = () => {
   };
 
   return (
-    <div>
-      <Profile />
+    <>
+      {/* <Profile /> */}
       <h1 className="text-center mt-5">Users</h1>
       {errors.length > 0 &&
         errors.map((error, index) => (
@@ -103,7 +102,7 @@ const UsersList = () => {
           </tbody>
         </Table>
       </Row>
-    </div>
+    </>
   );
 };
 
