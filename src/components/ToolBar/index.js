@@ -1,20 +1,23 @@
-import React from "react";
-import { Button, ButtonGroup, Row } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, ButtonGroup, Row, Spinner } from "react-bootstrap";
 import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import handleLogOut from "../../helpers/handleLogOut";
 
 const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
   const navigate = useNavigate();
+  const [loadingAction, setLoadingAction] = useState("");
 
   const handleApiError = (e, defaultErrorMessage) => {
+    setLoadingAction("");
     if (!e || (e.response && e.response.status === 401)) {
-      handleLogOut(e, navigate);
+      handleLogOut(navigate);
     }
     onSetErrors([defaultErrorMessage]);
   };
 
   const handleUserDeletion = async () => {
+    setLoadingAction("delete");
     try {
       await ApiService.delete(isChecked);
       onSetUsers((prevUsers) =>
@@ -31,6 +34,7 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
   };
 
   const handleUserStatusUpdate = async (blocked) => {
+    setLoadingAction(blocked ? "block" : "unblock");
     try {
       await ApiService.update(blocked, isChecked);
       onSetUsers((prevUsers) =>
@@ -53,6 +57,7 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
   const verifyLoggedInUser = (blocked) => {
     ApiService.getUserInfo()
       .then((res) => {
+        setLoadingAction("");
         if (res.status === 200 && blocked && isChecked.includes(res.data._id)) {
           handleLogOut("", navigate);
         }
@@ -65,6 +70,14 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
       });
   };
 
+  const renderIcon = (iconClass, action) => {
+    return loadingAction === action ? (
+      <Spinner animation="border" size="sm" />
+    ) : (
+      <i className={iconClass}></i>
+    );
+  };
+
   return (
     <Row>
       <div className="p-0 mt-5 mb-2">
@@ -74,16 +87,16 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
             onClick={() => handleUserStatusUpdate(true)}
           >
             <span className="me-2">Block</span>
-            <i className="fa-solid fa-lock"></i>
+            {renderIcon("fa-solid fa-lock", "block")}
           </Button>
           <Button
             variant="secondary"
             onClick={() => handleUserStatusUpdate(false)}
           >
-            <i className="fa-solid fa-lock-open"></i>
+            {renderIcon("fa-solid fa-lock-open", "unblock")}
           </Button>
           <Button variant="secondary" onClick={handleUserDeletion}>
-            <i className="fa-solid fa-trash"></i>
+            {renderIcon("fa-solid fa-trash", "delete")}
           </Button>
         </ButtonGroup>
       </div>

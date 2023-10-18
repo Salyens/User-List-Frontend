@@ -1,4 +1,4 @@
-function handleLogOut(e, navigate) {
+function handleLogOut(navigate) {
   localStorage.clear();
   navigate("/login");
 }

@@ -10,18 +10,19 @@ const useHandleForm = (initialState, serviceFunction, navigateFunction) => {
     setInput((prev) => ({ ...prev, [name]: value }));
   };
 
+  const hasEmptyField = (obj) => Object.values(obj).some((val) => !val);
+
   const handleSubmit = async () => {
     setIsLoading(true);
     try {
+      if (hasEmptyField(input)) return setErrors(["All field are required"]);
       await serviceFunction(input);
       setInput(initialState);
       navigateFunction();
     } catch (error) {
-      if (Array.isArray(error.response.data.message)) {
-        setErrors(error.response.data.message);
-      } else {
-        setErrors([error.response.data.message]);
-      }
+      Array.isArray(error.response.data.message)
+        ? setErrors(error.response.data.message)
+        : setErrors([error.response.data.message]);
     } finally {
       setIsLoading(false);
     }

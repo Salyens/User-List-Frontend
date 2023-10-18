@@ -1,6 +1,6 @@
 import { Button, Form, Spinner } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
-import RegAndLoginItem from "../../RegAndLoginItem";
+import RegAndLoginItem from "../RegAndLoginItem";
 import useHandleForm from "../../../hooks/useHandleForm";
 
 const AuthForm = ({ fields, initialState, apiServiceFunction, title }) => {
