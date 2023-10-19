@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import User from "../User";
 import Table from "react-bootstrap/Table";
 import { Form, Row, Spinner } from "react-bootstrap";
 import ApiService from "../../services/ApiService";
-import { useNavigate } from "react-router-dom";
 import ToolBar from "../ToolBar";
 import handleLogOut from "../../helpers/handleLogOut";
-import ErrorBoundary from "../HOC/ErrorBoundary";
-import Profile from "../Auth/Profile";
 
-const UsersList = () => {
-  const [errors, setErrors] = useState([]);
+const UsersList = ({ errors, onSetErrors }) => {
   const [isChecked, setIsChecked] = useState([]);
   const [users, setUsers] = useState({ list: [], isLoading: true });
-  const navigate = useNavigate();
 
   const handleGetUsers = () => {
     ApiService.get()
@@ -25,7 +20,7 @@ const UsersList = () => {
         if (!e || (e.response && e.response.status === 401))
           handleLogOut(navigate);
 
-        setErrors([
+        onSetErrors([
           "An error occurred while loading the data. Please try again later.",
         ]);
       });
@@ -49,9 +44,6 @@ const UsersList = () => {
 
   return (
     <>
-      <ErrorBoundary componentName="Profile">
-        <Profile onSetErrors={setErrors} />
-      </ErrorBoundary>
       <h1 className="text-center mt-5">Users</h1>
       {errors.length > 0 &&
         errors.map((error, index) => (
@@ -60,58 +52,54 @@ const UsersList = () => {
           </p>
         ))}
 
-      <ErrorBoundary componentName="ToolBar">
-        <ToolBar
-          isChecked={isChecked}
-          onSetIsChecked={setIsChecked}
-          onSetUsers={setUsers}
-          onSetErrors={setErrors}
-        />
-      </ErrorBoundary>
+      <ToolBar
+        isChecked={isChecked}
+        onSetIsChecked={setIsChecked}
+        onSetUsers={setUsers}
+        onSetErrors={onSetErrors}
+      />
 
-      <ErrorBoundary componentName="UsersList">
-        <Row className="table-responsive">
-          <Table bordered hover>
-            <thead>
-              <tr className="table-primary">
-                <th>
-                  <Form.Check
-                    type="checkbox"
-                    aria-label="select user"
-                    checked={isChecked.length === users.list.length}
-                    onChange={handleFillAll}
-                  />
-                </th>
-                {renderTableHeaders()}
+      <Row className="table-responsive">
+        <Table bordered hover>
+          <thead>
+            <tr className="table-primary">
+              <th>
+                <Form.Check
+                  type="checkbox"
+                  aria-label="select user"
+                  checked={isChecked.length === users.list.length}
+                  onChange={handleFillAll}
+                />
+              </th>
+              {renderTableHeaders()}
+            </tr>
+          </thead>
+          <tbody>
+            {users.isLoading ? (
+              <tr>
+                <td colSpan={5} className="text-center">
+                  <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </Spinner>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {users.isLoading ? (
-                <tr>
-                  <td colSpan={5} className="text-center">
-                    <Spinner animation="border" role="status">
-                      <span className="visually-hidden">Loading...</span>
-                    </Spinner>
-                  </td>
-                </tr>
-              ) : users.list.length ? (
-                users.list.map((user) => (
-                  <User
-                    isChecked={isChecked}
-                    onSetIsChecked={setIsChecked}
-                    userData={user}
-                    key={user._id}
-                  />
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={5}></td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
-        </Row>
-      </ErrorBoundary>
+            ) : users.list.length ? (
+              users.list.map((user) => (
+                <User
+                  isChecked={isChecked}
+                  onSetIsChecked={setIsChecked}
+                  userData={user}
+                  key={user._id}
+                />
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5}></td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </Row>
     </>
   );
 };

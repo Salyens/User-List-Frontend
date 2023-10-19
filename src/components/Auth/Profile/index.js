@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import ApiService from "../../../services/ApiService";
 
 const Profile = ({ onSetErrors }) => {
-  console.log(a);
   const navigate = useNavigate();
   const [userName, setUserName] = useState({ name: "", isLoading: true });
 

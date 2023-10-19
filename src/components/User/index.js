@@ -1,5 +1,4 @@
 import { Form } from "react-bootstrap";
-import React from "react";
 import "./user.css";
 
 const User = ({ isChecked, onSetIsChecked, userData }) => {

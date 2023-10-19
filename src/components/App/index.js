@@ -9,8 +9,11 @@ import {
 import WithAuth from "../HOC/WithAuth";
 import Login from "../Auth/Login";
 import Registration from "../Auth/Registration";
+import Profile from "../Auth/Profile";
+import ErrorBoundary from "../HOC/ErrorBoundary";
 
 const App = () => {
+  const [errors, setErrors] = useState([]);
   return (
     <Router>
       <div className=" m-3">
@@ -21,7 +24,12 @@ const App = () => {
             path="/users"
             element={
               <WithAuth>
-                <UsersList />
+                <ErrorBoundary componentName="Profile">
+                  <Profile onSetErrors={setErrors} />
+                </ErrorBoundary>
+                <ErrorBoundary componentName="UsersList">
+                  <UsersList errors={errors} onSetErrors={setErrors} />
+                </ErrorBoundary>
               </WithAuth>
             }
           />

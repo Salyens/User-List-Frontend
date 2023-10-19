@@ -1,4 +1,4 @@
-function handleLogOut(navigate) {
+const handleLogOut = (navigate) => {
   localStorage.clear();
   navigate("/login");
 }
