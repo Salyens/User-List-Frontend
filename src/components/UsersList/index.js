@@ -6,6 +6,8 @@ import ApiService from "../../services/ApiService";
 import { useNavigate } from "react-router-dom";
 import ToolBar from "../ToolBar";
 import handleLogOut from "../../helpers/handleLogOut";
+import ErrorBoundary from "../HOC/ErrorBoundary";
+import Profile from "../Auth/Profile";
 
 const UsersList = () => {
   const [errors, setErrors] = useState([]);
@@ -16,7 +18,8 @@ const UsersList = () => {
   const handleGetUsers = () => {
     ApiService.get()
       .then((res) => {
-        if (res.status === 200) setUsers((users) => ({list:res.data.users, isLoading:false }));
+        if (res.status === 200)
+          setUsers({ list: res.data.users, isLoading: false });
       })
       .catch((e) => {
         if (!e || (e.response && e.response.status === 401))
@@ -46,7 +49,9 @@ const UsersList = () => {
 
   return (
     <>
-      {/* <Profile /> */}
+      <ErrorBoundary componentName="Profile">
+        <Profile onSetErrors={setErrors} />
+      </ErrorBoundary>
       <h1 className="text-center mt-5">Users</h1>
       {errors.length > 0 &&
         errors.map((error, index) => (
@@ -55,53 +60,58 @@ const UsersList = () => {
           </p>
         ))}
 
-      <ToolBar
-        isChecked={isChecked}
-        onSetIsChecked={setIsChecked}
-        onSetUsers={setUsers}
-        onSetErrors={setErrors}
-      />
-      <Row className="table-responsive">
-        <Table bordered hover>
-          <thead>
-            <tr className="table-primary">
-              <th>
-                <Form.Check
-                  type="checkbox"
-                  aria-label="select user"
-                  checked={isChecked.length === users.list.length}
-                  onChange={handleFillAll}
-                />
-              </th>
-              {renderTableHeaders()}
-            </tr>
-          </thead>
-          <tbody>
-            {users.isLoading ? (
-              <tr>
-                <td colSpan={5} className="text-center">
-                  <Spinner animation="border" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                  </Spinner>
-                </td>
+      <ErrorBoundary componentName="ToolBar">
+        <ToolBar
+          isChecked={isChecked}
+          onSetIsChecked={setIsChecked}
+          onSetUsers={setUsers}
+          onSetErrors={setErrors}
+        />
+      </ErrorBoundary>
+
+      <ErrorBoundary componentName="UsersList">
+        <Row className="table-responsive">
+          <Table bordered hover>
+            <thead>
+              <tr className="table-primary">
+                <th>
+                  <Form.Check
+                    type="checkbox"
+                    aria-label="select user"
+                    checked={isChecked.length === users.list.length}
+                    onChange={handleFillAll}
+                  />
+                </th>
+                {renderTableHeaders()}
               </tr>
-            ) : users.list.length ? (
-              users.list.map((user) => (
-                <User
-                  isChecked={isChecked}
-                  onSetIsChecked={setIsChecked}
-                  userData={user}
-                  key={user._id}
-                />
-              ))
-            ) : (
-              <tr>
-                <td colSpan={5}></td>
-              </tr>
-            )}
-          </tbody>
-        </Table>
-      </Row>
+            </thead>
+            <tbody>
+              {users.isLoading ? (
+                <tr>
+                  <td colSpan={5} className="text-center">
+                    <Spinner animation="border" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </Spinner>
+                  </td>
+                </tr>
+              ) : users.list.length ? (
+                users.list.map((user) => (
+                  <User
+                    isChecked={isChecked}
+                    onSetIsChecked={setIsChecked}
+                    userData={user}
+                    key={user._id}
+                  />
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5}></td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </Row>
+      </ErrorBoundary>
     </>
   );
 };

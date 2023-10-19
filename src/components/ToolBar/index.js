@@ -7,7 +7,7 @@ import handleLogOut from "../../helpers/handleLogOut";
 const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
   const navigate = useNavigate();
   const [loadingAction, setLoadingAction] = useState("");
-
+  
   const handleApiError = (e, defaultErrorMessage) => {
     setLoadingAction("");
     if (!e || (e.response && e.response.status === 401)) {
@@ -83,8 +83,8 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
   };
 
   return (
-    <Row>
-      <div className="p-0 mt-5 mb-2">
+    <Row className="d-flex w-25">
+      <div className="p-0 mt-5 mb-2 d-flex">
         <ButtonGroup aria-label="User Actions">
           <Button
             variant="secondary"

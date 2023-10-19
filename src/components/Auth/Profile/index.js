@@ -4,7 +4,8 @@ import { Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import ApiService from "../../../services/ApiService";
 
-const Profile = () => {
+const Profile = ({ onSetErrors }) => {
+  console.log(a);
   const navigate = useNavigate();
   const [userName, setUserName] = useState({ name: "", isLoading: true });
 
@@ -12,16 +13,16 @@ const Profile = () => {
     ApiService.getUserInfo()
       .then((res) => {
         if (res.status === 200)
-          setUserName((userName) => ({
+          setUserName({
             name: res.data.name,
             isLoading: false,
-          }));
+          });
       })
       .catch((e) => {
         if (!e || (e.response && e.response.status === 401))
           handleLogOut(navigate);
 
-        setErrors([
+        onSetErrors([
           "An error occurred while loading the data. Please try again later.",
         ]);
       });
