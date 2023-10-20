@@ -83,7 +83,7 @@ const ToolBar = ({ isChecked, onSetIsChecked, onSetUsers, onSetErrors }) => {
   };
 
   return (
-    <Row className="d-flex w-25">
+    <Row>
       <div className="p-0 mt-5 mb-2 d-flex">
         <ButtonGroup aria-label="User Actions">
           <Button

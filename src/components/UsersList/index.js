@@ -5,10 +5,12 @@ import { Form, Row, Spinner } from "react-bootstrap";
 import ApiService from "../../services/ApiService";
 import ToolBar from "../ToolBar";
 import handleLogOut from "../../helpers/handleLogOut";
+import { useNavigate } from "react-router-dom";
 
 const UsersList = ({ errors, onSetErrors }) => {
   const [isChecked, setIsChecked] = useState([]);
   const [users, setUsers] = useState({ list: [], isLoading: true });
+  const navigate = useNavigate();
 
   const handleGetUsers = () => {
     ApiService.get()
